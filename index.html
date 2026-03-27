@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>HACKED</title>
+
+<style>
+    body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+        font-family: "Courier New", monospace;
+        color: #00ff00;
+    }
+
+    canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .terminal {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: left;
+        font-size: 24px;
+        white-space: pre-line;
+        text-shadow: 0 0 5px #00ff00;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        background: #00ff00;
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="terminal" id="terminal"></div>
+
+<script>
+/* MATRIX EFFECT */
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 16;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+for (let x = 0; x < columns; x++) {
+    drops[x] = 1;
+}
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#00ff00";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+setInterval(drawMatrix, 33);
+
+/* TERMINAL TEXT */
+const lines = [
+    "Initializing system...",
+    "Bypassing security...",
+    "Accessing mainframe...",
+    "Decrypting data...",
+    "ACCESS GRANTED",
+    "",
+    ">>> HAI ZIRA <<<"
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+
+function typeLine() {
+    if (lineIndex < lines.length) {
+        let currentLine = lines[lineIndex];
+
+        if (charIndex < currentLine.length) {
+            document.getElementById("terminal").innerHTML += currentLine.charAt(charIndex);
+            charIndex++;
+            setTimeout(typeLine, 50);
+        } else {
+            document.getElementById("terminal").innerHTML += "\n";
+            charIndex = 0;
+            lineIndex++;
+            setTimeout(typeLine, 300);
+        }
+    }
+}
+
+typeLine();
+</script>
+
+</body>
+</html>
